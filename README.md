@@ -160,7 +160,7 @@ public class SecurityConfig {
 
 ## How to run this?
 
-Client & Server are spring boot application.
-Server expose rest endpoint called ```/server``` which just returns a string over ```HTTPS```
-Client expose rest endpoint called ```/client``` which internally call server rest endpoint ```/server```.
+Client & Server are spring boot application.<br/>
+Server expose rest endpoint called ```/server``` which just returns a string over ```HTTPS``` <br/>
+Client expose rest endpoint called ```/client``` which internally call server rest endpoint ```/server```. <br/>
 So, when we hit ```http://localhost:8082/client``` it will return ```"It is a server call from client application over HTTPS"```
