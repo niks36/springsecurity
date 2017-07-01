@@ -11,6 +11,6 @@ public class ServerRestController {
 
     @GetMapping(value = "/server")
     public String serverCall(){
-        return "It is server call";
+        return "It is a server call from client application over HTTPS";
     }
 }
