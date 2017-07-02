@@ -1,7 +1,8 @@
 
-# SSL using Spring boot
+# Two way SSL using Spring boot
 
-This example shows how to set up client server communication using Spring boot security.
+This example shows how to set up client server communication using Spring boot security SSL.
+Here, we will demo two way ssl between client & server
 
 # Getting Started
 
@@ -9,9 +10,10 @@ This example shows how to set up client server communication using Spring boot s
    
    There is two very import things 
    * Keystore - contains private key
-   * Truststore - contains public key of trusted entity
+   * Trust-store - contains public key of trusted entity
 
    There are different way to create certificate. You can find n number of ways to create it.
+   Important thing to remember in two way ssl is both client & server knows each other, means client truststore contains server public key & visa viz.
    Here, we are creating certificate with having CA between client and server.
    
 # Generating CA Certificate
@@ -164,3 +166,33 @@ Client & Server are spring boot application.<br/>
 Server expose rest endpoint called ```/server``` which just returns a string over ```HTTPS``` <br/>
 Client expose rest endpoint called ```/client``` which internally call server rest endpoint ```/server```. <br/>
 So, when we hit ```http://localhost:8082/client``` it will return ```"It is a server call from client application over HTTPS"```
+
+## Things to remember
+
+Whenever client & server knows runs on a same machine this solution works, but when client & server runs on a different machine then we while creating certificate you need to specify their hostname into SAN while creating certificate.<br/>
+If you want to skip hostname checking you need to add following code.
+
+```java
+            KeyStore keyStore = KeyStore.getInstance("jks");
+            keyStore.load(keyStoreFile.getInputStream(), keyStorePassword.toCharArray());
+
+            SSLContext sslContext = SSLContextBuilder
+                    .create()
+                    .loadKeyMaterial(keyStore, keyPassword.toCharArray())
+                    .loadTrustMaterial(trustStoreFile.getFile(), trustStorePassword.toCharArray())
+                    .build();
+
+            CloseableHttpClient httpClient
+                    = HttpClients.custom()
+                    .setSSLContext(sslContext)
+                    .setSSLHostnameVerifier(hostnameVerifier)
+                    .build();
+
+            HttpComponentsClientHttpRequestFactory requestFactory
+                    = new HttpComponentsClientHttpRequestFactory();
+
+            requestFactory.setHttpClient(httpClient);
+
+            restTemplate.setRequestFactory(requestFactory);
+
+```
