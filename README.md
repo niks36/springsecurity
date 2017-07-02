@@ -169,7 +169,7 @@ So, when we hit ```http://localhost:8082/client``` it will return ```"It is a se
 
 ## Things to remember
 
-Whenever client & server knows runs on a same machine this solution works, but when client & server runs on a different machine then we while creating certificate you need to specify their hostname into SAN while creating certificate.<br/>
+Whenever client & server knows runs on a same machine this solution works, but when client & server runs on a different machine then while creating certificate you need to specify their hostname into SAN.<br/>
 If you want to skip hostname checking you need to add following code.
 
 ```java
